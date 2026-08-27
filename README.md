@@ -13,24 +13,10 @@ A foundational subprocess management library for the [Carp](https://github.com/c
 - **Resource Hygiene**: Strict use of `FD_CLOEXEC` and systematic descriptor cleanup to prevent leaks.
 - **Syscall Resilience**: Explicit handling of `EINTR` and `EPIPE`.
 
-## Usage
 
-```carp
-(load "carp-process/process.carp")
-(use Process)
+## Examples
 
-(defn main []
-  (let [cmd (Command.new "ls")
-        cmd-with-args (Command.arg cmd "-la")
-        output (run &cmd-with-args)]
-    (do
-      (IO.println (Output.stdout &output))
-      (let [status (Output.status &output)]
-        (if @(ExitStatus.exited? status)
-          (IO.println &(format "Exited with code: %d" @(ExitStatus.code status)))
-          (IO.println &(format "Killed by signal: %d" @(ExitStatus.signal status))))))))
-```
-
+See [examples.md](examples.md) for usage examples.
 ## Realistic Expectations & Safety
 
 As a synchronous systems library, users should be aware of the following architectural trade-offs:
