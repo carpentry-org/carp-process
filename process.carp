@@ -7,22 +7,16 @@
 (system-include "signal.h")
 
 (defmodule Command
-  (deftype T [
-    path String
-    args (Array String)
-    stdin String
-  ])
+  (deftype T [path String
+              args (Array String)
+              stdin String])
 
-  (defn new [path]
-    (T.init @path [] @""))
+  (defn new [path] (T.init @path [] @""))
 
   (defn arg [c a]
-    (let [new-args (Array.push-back @(T.args &c) @a)]
-      (T.set-args c new-args)))
+    (let [new-args (Array.push-back @(T.args &c) @a)] (T.set-args c new-args)))
 
-  (defn set-stdin [c s]
-    (T.set-stdin c @s))
-)
+  (defn set-stdin [c s] (T.set-stdin c @s)))
 
 (defmodule Process
   (register fork (Fn [] Int) "fork")
@@ -47,32 +41,31 @@
   (register EINTR Int "EINTR")
 
   (register SIGPIPE Int "SIGPIPE")
-  (deftemplate ignore-signal (Fn [Int] ()) "void $NAME(int sig)" "$DECL { signal(sig, SIG_IGN); }")
+  (deftemplate ignore-signal
+               (Fn [Int] ())
+               "void $NAME(int sig)"
+               "$DECL { signal(sig, SIG_IGN); }")
 
-  (defn ignore-sigpipe []
-    (ignore-signal SIGPIPE))
+  (defn ignore-sigpipe [] (ignore-signal SIGPIPE))
 
   (register WIFEXITED (Fn [Int] Bool) "WIFEXITED")
   (register WIFSIGNALED (Fn [Int] Bool) "WIFSIGNALED")
   (register WTERMSIG (Fn [Int] Int) "WTERMSIG")
   (register WEXITSTATUS (Fn [Int] Int) "WEXITSTATUS")
 
-  (deftype T [
-    pid Int
-    stdout Int
-    stderr Int
-    stdin Int
-  ])
+  (deftype T [pid Int
+              stdout Int
+              stderr Int
+              stdin Int])
 
-  (deftype ExitStatus [
-    code Int
-    signal Int
-    exited? Bool
-  ])
+  (deftype ExitStatus [code Int
+                       signal Int
+                       exited? Bool])
 
-  (deftemplate to-argv (Fn [(Ptr CChar) (Ref (Array String))] (Ptr (Ptr CChar)))
-    "char** $NAME(char* path, Array *a)"
-    "$DECL {
+  (deftemplate to-argv
+               (Fn [(Ptr CChar) (Ref (Array String))] (Ptr (Ptr CChar)))
+               "char** $NAME(char* path, Array *a)"
+               "$DECL {
        char** argv = CARP_MALLOC((a->len + 2) * sizeof(char*));
        argv[0] = path;
        for(int i = 0; i < a->len; i++) {
@@ -85,15 +78,11 @@
   (hidden set-cloexec)
   (defn set-cloexec [fd]
     (let [flags (fcntl fd F-GETFD 0)]
-      (if (< flags 0)
-        false
-        (>= (fcntl fd F-SETFD (bit-or flags FD-CLOEXEC)) 0))))
+      (if (< flags 0) false (>= (fcntl fd F-SETFD (bit-or flags FD-CLOEXEC)) 0))))
 
-  (deftype PipeSet [
-    out (Array Int)
-    err (Array Int)
-    in (Array Int)
-  ])
+  (deftype PipeSet [out (Array Int)
+                    err (Array Int)
+                    in (Array Int)])
 
   (hidden cleanup-pipes)
   (defn cleanup-pipes [ps]
@@ -115,18 +104,33 @@
           (do
             (ignore (set-cloexec @(Array.unsafe-nth (PipeSet.out &ps) 0)))
             (ignore (set-cloexec @(Array.unsafe-nth (PipeSet.out &ps) 1)))
-            (if (and (not merge-stderr) (< (pipe (Pointer.address (Array.unsafe-nth (PipeSet.err &ps) 0))) 0))
+            (if (and (not merge-stderr)
+                     (<
+                       (pipe
+                         (Pointer.address (Array.unsafe-nth (PipeSet.err &ps) 0)))
+                       0))
               (set! success false)
               (do
                 (if (not merge-stderr)
-                  (do (ignore (set-cloexec @(Array.unsafe-nth (PipeSet.err &ps) 0)))
-                      (ignore (set-cloexec @(Array.unsafe-nth (PipeSet.err &ps) 1))))
+                  (do
+                    (ignore
+                      (set-cloexec @(Array.unsafe-nth (PipeSet.err &ps) 0)))
+                    (ignore
+                      (set-cloexec @(Array.unsafe-nth (PipeSet.err &ps) 1))))
                   ())
-                (if (and capture-stdin (< (pipe (Pointer.address (Array.unsafe-nth (PipeSet.in &ps) 0))) 0))
+                (if (and capture-stdin
+                         (<
+                           (pipe
+                             (Pointer.address (Array.unsafe-nth (PipeSet.in &ps)
+                                                                0)))
+                           0))
                   (set! success false)
                   (if capture-stdin
-                    (do (ignore (set-cloexec @(Array.unsafe-nth (PipeSet.in &ps) 0)))
-                        (ignore (set-cloexec @(Array.unsafe-nth (PipeSet.in &ps) 1))))
+                    (do
+                      (ignore
+                        (set-cloexec @(Array.unsafe-nth (PipeSet.in &ps) 0)))
+                      (ignore
+                        (set-cloexec @(Array.unsafe-nth (PipeSet.in &ps) 1))))
                     ()))))))
 
         (if (not success)
@@ -134,54 +138,88 @@
           (let [argv (to-argv (String.cstr path) args)
                 pid (fork)]
             (cond
-              (< pid 0) (do 
-                          (cleanup-pipes &ps)
-                          (ignore (Pointer.free (the (Ptr (Ptr CChar)) (Pointer.from-long (Pointer.to-long argv)))))
-                          (Result.Error @"Failed to fork"))
-              (= pid 0) (do
-                          ;; CHILD PROCESS
-                          (ignore (close @(Array.unsafe-nth (PipeSet.out &ps) 0)))
-                          (if (not merge-stderr) (ignore (close @(Array.unsafe-nth (PipeSet.err &ps) 0))) ())
-                          (if capture-stdin (ignore (close @(Array.unsafe-nth (PipeSet.in &ps) 1))) ())
+              (< pid 0)
+                (do
+                  (cleanup-pipes &ps)
+                  (ignore
+                    (Pointer.free
+                      (the (Ptr (Ptr CChar))
+                           (Pointer.from-long (Pointer.to-long argv)))))
+                  (Result.Error @"Failed to fork"))
+              (= pid 0)
+                (do
+                  ;; CHILD PROCESS
+                  (ignore (close @(Array.unsafe-nth (PipeSet.out &ps) 0)))
+                  (if (not merge-stderr)
+                    (ignore (close @(Array.unsafe-nth (PipeSet.err &ps) 0)))
+                    ())
+                  (if capture-stdin
+                    (ignore (close @(Array.unsafe-nth (PipeSet.in &ps) 1)))
+                    ())
 
-                          ;; Setup Stdout
-                          (if (or (< (dup2 @(Array.unsafe-nth (PipeSet.out &ps) 1) STDOUT-FILENO) 0)
-                                  (< (close @(Array.unsafe-nth (PipeSet.out &ps) 1)) 0))
-                            (_exit 127) ())
-                          
-                          ;; Setup Stderr
-                          (if merge-stderr
-                            (if (< (dup2 STDOUT-FILENO STDERR-FILENO) 0) (_exit 127) ())
-                            (if (or (< (dup2 @(Array.unsafe-nth (PipeSet.err &ps) 1) STDERR-FILENO) 0)
-                                    (< (close @(Array.unsafe-nth (PipeSet.err &ps) 1)) 0))
-                              (_exit 127) ()))
+                  ;; Setup Stdout
+                  (if (or
+                      (<
+                        (dup2 @(Array.unsafe-nth (PipeSet.out &ps) 1)
+                              STDOUT-FILENO)
+                        0)
+                      (< (close @(Array.unsafe-nth (PipeSet.out &ps) 1)) 0))
+                    (_exit 127)
+                    ())
 
-                          ;; Setup Stdin
-                          (if capture-stdin
-                            (if (or (< (dup2 @(Array.unsafe-nth (PipeSet.in &ps) 0) STDIN-FILENO) 0)
-                                    (< (close @(Array.unsafe-nth (PipeSet.in &ps) 0)) 0))
-                              (_exit 127) ())
-                            ())
+                  ;; Setup Stderr
+                  (if merge-stderr
+                    (if (< (dup2 STDOUT-FILENO STDERR-FILENO) 0) (_exit 127) ())
+                    (if (or
+                        (<
+                          (dup2 @(Array.unsafe-nth (PipeSet.err &ps) 1)
+                                STDERR-FILENO)
+                          0)
+                        (< (close @(Array.unsafe-nth (PipeSet.err &ps) 1)) 0))
+                      (_exit 127)
+                      ()))
 
-                          (ignore (execvp (String.cstr path) argv))
-                          (_exit 127)
-                          (Result.Error @"Unreachable"))
+                  ;; Setup Stdin
+                  (if capture-stdin
+                    (if (or
+                        (<
+                          (dup2 @(Array.unsafe-nth (PipeSet.in &ps) 0)
+                                STDIN-FILENO)
+                          0)
+                        (< (close @(Array.unsafe-nth (PipeSet.in &ps) 0)) 0))
+                      (_exit 127)
+                      ())
+                    ())
+
+                  (ignore (execvp (String.cstr path) argv))
+                  (_exit 127)
+                  (Result.Error @"Unreachable"))
               (do
                 ;; PARENT PROCESS
-                (ignore (Pointer.free (the (Ptr (Ptr CChar)) (Pointer.from-long (Pointer.to-long argv)))))
-                
+                (ignore
+                  (Pointer.free
+                    (the (Ptr (Ptr CChar))
+                         (Pointer.from-long (Pointer.to-long argv)))))
+
                 ;; Close child ends
                 (ignore (close @(Array.unsafe-nth (PipeSet.out &ps) 1)))
-                (if (not merge-stderr) (ignore (close @(Array.unsafe-nth (PipeSet.err &ps) 1))) ())
-                (if capture-stdin (ignore (close @(Array.unsafe-nth (PipeSet.in &ps) 0))) ())
+                (if (not merge-stderr)
+                  (ignore (close @(Array.unsafe-nth (PipeSet.err &ps) 1)))
+                  ())
+                (if capture-stdin
+                  (ignore (close @(Array.unsafe-nth (PipeSet.in &ps) 0)))
+                  ())
 
                 (let [out-read @(Array.unsafe-nth (PipeSet.out &ps) 0)
-                      err-read (if merge-stderr -1 @(Array.unsafe-nth (PipeSet.err &ps) 0))
-                      in-write (if capture-stdin @(Array.unsafe-nth (PipeSet.in &ps) 1) -1)]
+                      err-read (if merge-stderr
+                        -1
+                        @(Array.unsafe-nth (PipeSet.err &ps) 0))
+                      in-write (if capture-stdin
+                        @(Array.unsafe-nth (PipeSet.in &ps) 1)
+                        -1)]
                   (Result.Success (T.init pid out-read err-read in-write))))))))))
 
-  (defn spawn [path args]
-    (spawn-with-options path args false false))
+  (defn spawn [path args] (spawn-with-options path args false false))
 
   (defn wait [p]
     (let [status 0]
@@ -203,12 +241,17 @@
       (do
         (while (< written len)
           (do
-            (set! res (write fd (Pointer.add ptr (the Long (Long.from-int written))) (- len written)))
+            (set! res
+                  (write fd
+                         (Pointer.add ptr (the Long (Long.from-int written)))
+                         (- len written)))
             (if (> res 0)
               (set! written (+ written res))
               (if (and (< res 0) (Int.= System.errno EINTR))
-                () ;; Interrupted, retry
-                (set! written -1))))) ;; Error or res == 0
+                ()
+                ;; Interrupted, retry
+                (set! written -1)))))
+        ;; Error or res == 0
         (and (>= written 0) (Int.= written len)))))
 
   (defn read-all [fd]
@@ -225,62 +268,72 @@
               (if (> bytes-read 0)
                 (let [chunk (String.allocate bytes-read \0)]
                   (do
-                    (ignore (memcpy (String.cstr &chunk) (String.cstr &buffer) bytes-read))
+                    (ignore
+                      (memcpy (String.cstr &chunk)
+                              (String.cstr &buffer)
+                              bytes-read))
                     (set! total (String.append &total &chunk))))
                 (if (Int.= bytes-read 0)
                   (set! eof true)
                   (if (Int.= System.errno EINTR)
-                    () ;; Interrupted, retry
-                    (set! eof true)))))) ;; Real error
+                    ()
+                    ;; Interrupted, retry
+                    (set! eof true))))))
+          ;; Real error
           total))))
 
-  (deftype Output [
-    stdout String
-    stderr String
-    status Process.ExitStatus
-  ])
+  (deftype Output [stdout String
+                   stderr String
+                   status Process.ExitStatus])
 
   (defn run [cmd]
     (let [capture-in (not (= "" (Command.T.stdin cmd)))
-          p-res (spawn-with-options (Command.T.path cmd) (Command.T.args cmd) false capture-in)]
+          p-res (spawn-with-options (Command.T.path cmd)
+                                    (Command.T.args cmd)
+                                    false
+                                    capture-in)]
       (match p-res
         (Result.Error err) (Output.init @"" err (ExitStatus.init -1 0 false))
-        (Result.Success p) (do
-                             (if capture-in
-                               (do (ignore (write-all @(T.stdin &p) (Command.T.stdin cmd)))
-                                   (ignore (close @(T.stdin &p))))
-                               ())
-                             (let [stdout (read-all @(T.stdout &p))
-                                   stderr (read-all @(T.stderr &p))
-                                   status (wait &p)]
-                               (do
-                                 (ignore (close @(T.stdout &p)))
-                                 (if (>= @(T.stderr &p) 0) (ignore (close @(T.stderr &p))) ())
-                                 (Output.init stdout stderr status)))))))
+        (Result.Success p)
+          (do
+            (if capture-in
+              (do
+                (ignore (write-all @(T.stdin &p) (Command.T.stdin cmd)))
+                (ignore (close @(T.stdin &p))))
+              ())
+            (let [stdout (read-all @(T.stdout &p))
+                  stderr (read-all @(T.stderr &p))
+                  status (wait &p)]
+              (do
+                (ignore (close @(T.stdout &p)))
+                (if (>= @(T.stderr &p) 0) (ignore (close @(T.stderr &p))) ())
+                (Output.init stdout stderr status)))))))
 
   (defn run-combined [cmd]
     (let [capture-in (not (= "" (Command.T.stdin cmd)))
-          p-res (spawn-with-options (Command.T.path cmd) (Command.T.args cmd) true capture-in)]
+          p-res (spawn-with-options (Command.T.path cmd)
+                                    (Command.T.args cmd)
+                                    true
+                                    capture-in)]
       (match p-res
         (Result.Error err) (Output.init @"" err (ExitStatus.init -1 0 false))
-        (Result.Success p) (do
-                             (if capture-in
-                               (do (ignore (write-all @(T.stdin &p) (Command.T.stdin cmd)))
-                                   (ignore (close @(T.stdin &p))))
-                               ())
-                             (let [stdout (read-all @(T.stdout &p))
-                                   status (wait &p)]
-                               (do
-                                 (ignore (close @(T.stdout &p)))
-                                 (Output.init stdout @"" status)))))))
+        (Result.Success p)
+          (do
+            (if capture-in
+              (do
+                (ignore (write-all @(T.stdin &p) (Command.T.stdin cmd)))
+                (ignore (close @(T.stdin &p))))
+              ())
+            (let [stdout (read-all @(T.stdout &p))
+                  status (wait &p)]
+              (do
+                (ignore (close @(T.stdout &p)))
+                (Output.init stdout @"" status)))))))
 
   (register kill (Fn [Int Int] Int) "kill")
   (register SIGTERM Int "SIGTERM")
   (register SIGKILL Int "SIGKILL")
 
-  (defn terminate [p]
-    (kill @(T.pid p) SIGTERM))
+  (defn terminate [p] (kill @(T.pid p) SIGTERM))
 
-  (defn kill! [p]
-    (kill @(T.pid p) SIGKILL))
-)
+  (defn kill! [p] (kill @(T.pid p) SIGKILL)))
