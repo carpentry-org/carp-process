@@ -1,0 +1,967 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <link rel="stylesheet" href="../style.css">
+    </head>
+    <body>
+        <div class="content">
+            <div class="logo">
+                <a href="https://github.com/carpentry-org/carp-process">
+                    <img src="">
+                </a>
+                <div class="title">
+                    carp-process
+                </div>
+                <div class="index">
+                    <ul>
+                        <li>
+                            <details>
+                                <summary>
+                                    <a href="Command.html">
+                                        Command
+                                    </a>
+                                </summary>
+                                <ul>
+                                    <li>
+                                        <a href="Command.T.html">
+                                            T
+                                        </a>
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary>
+                                    <a href="Process.html">
+                                        Process
+                                    </a>
+                                </summary>
+                                <ul>
+                                    <li>
+                                        <a href="Process.ExitStatus.html">
+                                            ExitStatus
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="Process.Output.html">
+                                            Output
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="Process.PipeSet.html">
+                                            PipeSet
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="Process.T.html">
+                                            T
+                                        </a>
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="module">
+                <h1>
+                    Process
+                </h1>
+                <div class="module-description">
+                    
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#EINTR">
+                        <h3 id="EINTR">
+                            EINTR
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        Int
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#EPIPE">
+                        <h3 id="EPIPE">
+                            EPIPE
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        Int
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#ExitStatus">
+                        <h3 id="ExitStatus">
+                            <a href="Process.ExitStatus.html">
+                                ExitStatus
+                            </a>
+                        </h3>
+                    </a>
+                    <div class="description">
+                        module
+                    </div>
+                    <p class="sig">
+                        Module
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>how a process terminated.</p>
+<p><code>exited?</code> distinguishes the two cases: a normal exit sets it true and puts
+the status in <code>code</code>, while termination by a signal sets it false, <code>code</code> to
+<code>-1</code>, and <code>signal</code> to the signal number.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#F-GETFD">
+                        <h3 id="F-GETFD">
+                            F-GETFD
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        Int
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#F-SETFD">
+                        <h3 id="F-SETFD">
+                            F-SETFD
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        Int
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#FD-CLOEXEC">
+                        <h3 id="FD-CLOEXEC">
+                            FD-CLOEXEC
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        Int
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#Output">
+                        <h3 id="Output">
+                            <a href="Process.Output.html">
+                                Output
+                            </a>
+                        </h3>
+                    </a>
+                    <div class="description">
+                        module
+                    </div>
+                    <p class="sig">
+                        Module
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>the captured result of a finished process: its <code>stdout</code>,
+its <code>stderr</code>, and the <a href="#ExitStatus"><code>ExitStatus</code></a> it terminated with.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#PipeSet">
+                        <h3 id="PipeSet">
+                            <a href="Process.PipeSet.html">
+                                PipeSet
+                            </a>
+                        </h3>
+                    </a>
+                    <div class="description">
+                        module
+                    </div>
+                    <p class="sig">
+                        Module
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#SIGKILL">
+                        <h3 id="SIGKILL">
+                            SIGKILL
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        Int
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#SIGPIPE">
+                        <h3 id="SIGPIPE">
+                            SIGPIPE
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        Int
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#SIGTERM">
+                        <h3 id="SIGTERM">
+                            SIGTERM
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        Int
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#STDERR-FILENO">
+                        <h3 id="STDERR-FILENO">
+                            STDERR-FILENO
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        Int
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#STDIN-FILENO">
+                        <h3 id="STDIN-FILENO">
+                            STDIN-FILENO
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        Int
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#STDOUT-FILENO">
+                        <h3 id="STDOUT-FILENO">
+                            STDOUT-FILENO
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        Int
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#T">
+                        <h3 id="T">
+                            <a href="Process.T.html">
+                                T
+                            </a>
+                        </h3>
+                    </a>
+                    <div class="description">
+                        module
+                    </div>
+                    <p class="sig">
+                        Module
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>a handle to a spawned process: its pid, and the parent-side ends of
+the pipes to its <code>stdout</code>, <code>stderr</code> and <code>stdin</code>.</p>
+<p>A descriptor is <code>-1</code> when the corresponding pipe was not opened.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#WEXITSTATUS">
+                        <h3 id="WEXITSTATUS">
+                            WEXITSTATUS
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [Int] Int)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#WIFEXITED">
+                        <h3 id="WIFEXITED">
+                            WIFEXITED
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [Int] Bool)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#WIFSIGNALED">
+                        <h3 id="WIFSIGNALED">
+                            WIFSIGNALED
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [Int] Bool)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#WTERMSIG">
+                        <h3 id="WTERMSIG">
+                            WTERMSIG
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [Int] Int)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#_exit">
+                        <h3 id="_exit">
+                            _exit
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [Int] ())
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#close">
+                        <h3 id="close">
+                            close
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [Int] Int)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#dup2">
+                        <h3 id="dup2">
+                            dup2
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [Int, Int] Int)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#execvp">
+                        <h3 id="execvp">
+                            execvp
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ptr CChar), (Ptr (Ptr CChar))] Int)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#fcntl">
+                        <h3 id="fcntl">
+                            fcntl
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [Int, Int, Int] Int)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#fork">
+                        <h3 id="fork">
+                            fork
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [] Int)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#ignore-signal">
+                        <h3 id="ignore-signal">
+                            ignore-signal
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [Int] ())
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#ignore-sigpipe">
+                        <h3 id="ignore-sigpipe">
+                            ignore-sigpipe
+                        </h3>
+                    </a>
+                    <div class="description">
+                        defn
+                    </div>
+                    <p class="sig">
+                        (Fn [] ())
+                    </p>
+                    <pre class="args">
+                        (ignore-sigpipe)
+                    </pre>
+                    <p class="doc">
+                        <p>sets <code>SIGPIPE</code> to <code>SIG_IGN</code> for the whole process.</p>
+<p>Writing to a closed pipe then fails with <code>EPIPE</code> instead of killing the
+program, which is what the write path here expects. Called once during
+spawn.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#kill">
+                        <h3 id="kill">
+                            kill
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [Int, Int] Int)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#kill!">
+                        <h3 id="kill!">
+                            kill!
+                        </h3>
+                    </a>
+                    <div class="description">
+                        defn
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a)] Int)
+                    </p>
+                    <pre class="args">
+                        (kill! p)
+                    </pre>
+                    <p class="doc">
+                        <p>sends <code>SIGKILL</code> to the process <code>p</code>.</p>
+<p>Returns the return value of <code>kill(2)</code>: <code>0</code> on success, <code>-1</code> on error.
+The process is not reaped; call <a href="#wait"><code>wait</code></a> afterwards.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#memcpy">
+                        <h3 id="memcpy">
+                            memcpy
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ptr CChar), (Ptr CChar), Int] (Ptr ()))
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#pipe">
+                        <h3 id="pipe">
+                            pipe
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ptr Int)] Int)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#read">
+                        <h3 id="read">
+                            read
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [Int, (Ptr CChar), Int] Int)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#read-all">
+                        <h3 id="read-all">
+                            read-all
+                        </h3>
+                    </a>
+                    <div class="description">
+                        defn
+                    </div>
+                    <p class="sig">
+                        (Fn [Int] String)
+                    </p>
+                    <pre class="args">
+                        (read-all fd)
+                    </pre>
+                    <p class="doc">
+                        <p>reads from the descriptor <code>fd</code> until EOF and returns everything
+it read as a <code>String</code>.</p>
+<p>Returns the empty string for a negative <code>fd</code>. Retries on <code>EINTR</code>; any other
+read error ends the loop and returns what was read so far. The whole stream
+is held in memory, so this is not suitable for unbounded output.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#run">
+                        <h3 id="run">
+                            run
+                        </h3>
+                    </a>
+                    <div class="description">
+                        defn
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Command.T a)] Process.Output)
+                    </p>
+                    <pre class="args">
+                        (run cmd)
+                    </pre>
+                    <p class="doc">
+                        <p>runs <code>cmd</code> to completion, capturing <code>stdout</code> and <code>stderr</code>
+separately, and returns an <a href="#Output"><code>Output</code></a>.</p>
+<p>The two pipes are drained sequentially, <code>stdout</code> first. If the child fills
+the <code>stderr</code> pipe buffer while this is still reading <code>stdout</code>, both sides
+block and the call deadlocks. Use <a href="#run-combined"><code>run-combined</code></a> for
+processes that write a lot to both streams.</p>
+<p>On spawn failure the error is returned in <code>Output.stderr</code> with an
+<code>ExitStatus</code> of code <code>-1</code> and <code>exited?</code> false.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#run-combined">
+                        <h3 id="run-combined">
+                            run-combined
+                        </h3>
+                    </a>
+                    <div class="description">
+                        defn
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Command.T a)] Process.Output)
+                    </p>
+                    <pre class="args">
+                        (run-combined cmd)
+                    </pre>
+                    <p class="doc">
+                        <p>runs <code>cmd</code> to completion with <code>stderr</code> merged into <code>stdout</code> at the
+OS level, and returns an <a href="#Output"><code>Output</code></a>.</p>
+<p>Because both streams share one pipe there is only one buffer to drain, so
+this cannot deadlock the way <a href="#run"><code>run</code></a> can. <code>Output.stderr</code> is always
+empty. Prefer this for processes with high-volume or interleaved output.</p>
+<p>On spawn failure the error is returned in <code>Output.stderr</code> with an
+<code>ExitStatus</code> of code <code>-1</code> and <code>exited?</code> false.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#spawn">
+                        <h3 id="spawn">
+                            spawn
+                        </h3>
+                    </a>
+                    <div class="description">
+                        defn
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref String a), (Ref (Array String) b)] (Result Process.T String))
+                    </p>
+                    <pre class="args">
+                        (spawn path args)
+                    </pre>
+                    <p class="doc">
+                        <p>spawns <code>path</code> with <code>args</code> and returns a handle to the running
+process, with <code>stdout</code> and <code>stderr</code> on separate pipes and no <code>stdin</code> pipe.</p>
+<p>Arguments are passed to <code>execvp(3)</code> directly, not through a shell, so there
+is no quoting or injection to worry about. <code>args</code> does not include <code>argv[0]</code>;
+it is prepended from <code>path</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#spawn-with-options">
+                        <h3 id="spawn-with-options">
+                            spawn-with-options
+                        </h3>
+                    </a>
+                    <div class="description">
+                        defn
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref String a), (Ref (Array String) b), Bool, Bool] (Result Process.T String))
+                    </p>
+                    <pre class="args">
+                        (spawn-with-options path args merge-stderr capture-stdin)
+                    </pre>
+                    <p class="doc">
+                        <p>spawns <code>path</code> with <code>args</code>, returning a handle to
+the running process.</p>
+<p>When <code>merge-stderr</code> is true the child’s <code>stderr</code> is pointed at the same pipe
+as its <code>stdout</code> and no separate <code>stderr</code> pipe is opened. When <code>capture-stdin</code>
+is true a pipe is opened for the child’s <code>stdin</code>, writable through
+<code>T.stdin</code>.</p>
+<p>All parent-side descriptors are set <code>FD_CLOEXEC</code> before the fork, and the
+child <code>_exit</code>s (never <code>exit</code>) so no shared runtime state is flushed twice.
+On any setup failure every descriptor is closed and a <code>Result.Error</code> is
+returned.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#terminate">
+                        <h3 id="terminate">
+                            terminate
+                        </h3>
+                    </a>
+                    <div class="description">
+                        defn
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a)] Int)
+                    </p>
+                    <pre class="args">
+                        (terminate p)
+                    </pre>
+                    <p class="doc">
+                        <p>sends <code>SIGTERM</code> to the process <code>p</code>.</p>
+<p>Returns the return value of <code>kill(2)</code>: <code>0</code> on success, <code>-1</code> on error.
+The process is not reaped; call <a href="#wait"><code>wait</code></a> afterwards.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#to-argv">
+                        <h3 id="to-argv">
+                            to-argv
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ptr CChar), (Ref (Array String) a)] (Ptr (Ptr CChar)))
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#wait">
+                        <h3 id="wait">
+                            wait
+                        </h3>
+                    </a>
+                    <div class="description">
+                        defn
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a)] Process.ExitStatus)
+                    </p>
+                    <pre class="args">
+                        (wait p)
+                    </pre>
+                    <p class="doc">
+                        <p>blocks until the process <code>p</code> terminates and returns its
+<a href="#ExitStatus"><code>ExitStatus</code></a>.</p>
+<p>A normal exit yields the exit code with <code>exited?</code> true; termination by a
+signal yields code <code>-1</code>, the signal number, and <code>exited?</code> false.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#waitpid">
+                        <h3 id="waitpid">
+                            waitpid
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [Int, (Ptr Int), Int] Int)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#write">
+                        <h3 id="write">
+                            write
+                        </h3>
+                    </a>
+                    <div class="description">
+                        external
+                    </div>
+                    <p class="sig">
+                        (Fn [Int, (Ptr CChar), Int] Int)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#write-all">
+                        <h3 id="write-all">
+                            write-all
+                        </h3>
+                    </a>
+                    <div class="description">
+                        defn
+                    </div>
+                    <p class="sig">
+                        (Fn [Int, (Ref String a)] Bool)
+                    </p>
+                    <pre class="args">
+                        (write-all fd data)
+                    </pre>
+                    <p class="doc">
+                        <p>writes all of <code>data</code> to the descriptor <code>fd</code>, looping until
+the write is complete.</p>
+<p>Returns whether every byte was written. Retries on <code>EINTR</code>; any other write
+error (<code>EPIPE</code>, for instance) makes it return <code>false</code>.</p>
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

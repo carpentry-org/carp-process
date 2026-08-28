@@ -1,0 +1,503 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <link rel="stylesheet" href="../style.css">
+    </head>
+    <body>
+        <div class="content">
+            <div class="logo">
+                <a href="https://github.com/carpentry-org/carp-process">
+                    <img src="">
+                </a>
+                <div class="title">
+                    carp-process
+                </div>
+                <div class="index">
+                    <ul>
+                        <li>
+                            <details>
+                                <summary>
+                                    <a href="Command.html">
+                                        Command
+                                    </a>
+                                </summary>
+                                <ul>
+                                    <li>
+                                        <a href="Command.T.html">
+                                            T
+                                        </a>
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary>
+                                    <a href="Process.html">
+                                        Process
+                                    </a>
+                                </summary>
+                                <ul>
+                                    <li>
+                                        <a href="Process.ExitStatus.html">
+                                            ExitStatus
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="Process.Output.html">
+                                            Output
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="Process.PipeSet.html">
+                                            PipeSet
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="Process.T.html">
+                                            T
+                                        </a>
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="module">
+                <h1>
+                    Process.T
+                </h1>
+                <div class="module-description">
+                    <p>a handle to a spawned process: its pid, and the parent-side ends of
+the pipes to its <code>stdout</code>, <code>stderr</code> and <code>stdin</code>.</p>
+<p>A descriptor is <code>-1</code> when the corresponding pipe was not opened.</p>
+
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#copy">
+                        <h3 id="copy">
+                            copy
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a)] Process.T)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>copies a <code>T</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#delete">
+                        <h3 id="delete">
+                            delete
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [Process.T] ())
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>deletes a <code>T</code>. Should usually not be called manually.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#init">
+                        <h3 id="init">
+                            init
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [Int, Int, Int, Int] Process.T)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>creates a <code>T</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#pid">
+                        <h3 id="pid">
+                            pid
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a)] (Ref Int a))
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>gets the <code>pid</code> property of a <code>T</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#prn">
+                        <h3 id="prn">
+                            prn
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a)] String)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>converts a <code>T</code> to a string.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#set-pid">
+                        <h3 id="set-pid">
+                            set-pid
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [Process.T, Int] Process.T)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>sets the <code>pid</code> property of a <code>T</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#set-pid!">
+                        <h3 id="set-pid!">
+                            set-pid!
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a), Int] ())
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>sets the <code>pid</code> property of a <code>T</code> in place.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#set-stderr">
+                        <h3 id="set-stderr">
+                            set-stderr
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [Process.T, Int] Process.T)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>sets the <code>stderr</code> property of a <code>T</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#set-stderr!">
+                        <h3 id="set-stderr!">
+                            set-stderr!
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a), Int] ())
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>sets the <code>stderr</code> property of a <code>T</code> in place.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#set-stdin">
+                        <h3 id="set-stdin">
+                            set-stdin
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [Process.T, Int] Process.T)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>sets the <code>stdin</code> property of a <code>T</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#set-stdin!">
+                        <h3 id="set-stdin!">
+                            set-stdin!
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a), Int] ())
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>sets the <code>stdin</code> property of a <code>T</code> in place.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#set-stdout">
+                        <h3 id="set-stdout">
+                            set-stdout
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [Process.T, Int] Process.T)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>sets the <code>stdout</code> property of a <code>T</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#set-stdout!">
+                        <h3 id="set-stdout!">
+                            set-stdout!
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a), Int] ())
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>sets the <code>stdout</code> property of a <code>T</code> in place.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#stderr">
+                        <h3 id="stderr">
+                            stderr
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a)] (Ref Int a))
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>gets the <code>stderr</code> property of a <code>T</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#stdin">
+                        <h3 id="stdin">
+                            stdin
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a)] (Ref Int a))
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>gets the <code>stdin</code> property of a <code>T</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#stdout">
+                        <h3 id="stdout">
+                            stdout
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a)] (Ref Int a))
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>gets the <code>stdout</code> property of a <code>T</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#str">
+                        <h3 id="str">
+                            str
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref Process.T a)] String)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>converts a <code>T</code> to a string.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#update-pid">
+                        <h3 id="update-pid">
+                            update-pid
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [Process.T, (Ref (Fn [Int] Int a) b)] Process.T)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>updates the <code>pid</code> property of a <code>Process.T</code> using a function <code>f</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#update-stderr">
+                        <h3 id="update-stderr">
+                            update-stderr
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [Process.T, (Ref (Fn [Int] Int a) b)] Process.T)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>updates the <code>stderr</code> property of a <code>Process.T</code> using a function <code>f</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#update-stdin">
+                        <h3 id="update-stdin">
+                            update-stdin
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [Process.T, (Ref (Fn [Int] Int a) b)] Process.T)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>updates the <code>stdin</code> property of a <code>Process.T</code> using a function <code>f</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#update-stdout">
+                        <h3 id="update-stdout">
+                            update-stdout
+                        </h3>
+                    </a>
+                    <div class="description">
+                        instantiate
+                    </div>
+                    <p class="sig">
+                        (Fn [Process.T, (Ref (Fn [Int] Int a) b)] Process.T)
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>updates the <code>stdout</code> property of a <code>Process.T</code> using a function <code>f</code>.</p>
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

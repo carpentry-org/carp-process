@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <link rel="stylesheet" href="../style.css">
+    </head>
+    <body>
+        <div class="content">
+            <div class="logo">
+                <a href="https://github.com/carpentry-org/carp-process">
+                    <img src="">
+                </a>
+                <div class="title">
+                    carp-process
+                </div>
+                <div class="index">
+                    <ul>
+                        <li>
+                            <details>
+                                <summary>
+                                    <a href="Command.html">
+                                        Command
+                                    </a>
+                                </summary>
+                                <ul>
+                                    <li>
+                                        <a href="Command.T.html">
+                                            T
+                                        </a>
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary>
+                                    <a href="Process.html">
+                                        Process
+                                    </a>
+                                </summary>
+                                <ul>
+                                    <li>
+                                        <a href="Process.ExitStatus.html">
+                                            ExitStatus
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="Process.Output.html">
+                                            Output
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="Process.PipeSet.html">
+                                            PipeSet
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="Process.T.html">
+                                            T
+                                        </a>
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="module">
+                <h1>
+                    Command
+                </h1>
+                <div class="module-description">
+                    
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#T">
+                        <h3 id="T">
+                            <a href="Command.T.html">
+                                T
+                            </a>
+                        </h3>
+                    </a>
+                    <div class="description">
+                        module
+                    </div>
+                    <p class="sig">
+                        Module
+                    </p>
+                    <span>
+                        
+                    </span>
+                    <p class="doc">
+                        <p>a command to be run: the executable <code>path</code>, its <code>args</code> (not
+including <code>argv[0]</code>), and the string to pipe to its standard input.</p>
+<p>Build one with <a href="#new"><code>new</code></a> and <a href="#arg"><code>arg</code></a> rather than by hand.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#arg">
+                        <h3 id="arg">
+                            arg
+                        </h3>
+                    </a>
+                    <div class="description">
+                        defn
+                    </div>
+                    <p class="sig">
+                        (Fn [Command.T, (Ref String a)] Command.T)
+                    </p>
+                    <pre class="args">
+                        (arg c a)
+                    </pre>
+                    <p class="doc">
+                        <p>appends the argument <code>a</code> to the command <code>c</code>.</p>
+<p>Arguments are passed to <code>execvp(3)</code> as-is, never through a shell, so they
+need no quoting and cannot be split or interpreted.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#new">
+                        <h3 id="new">
+                            new
+                        </h3>
+                    </a>
+                    <div class="description">
+                        defn
+                    </div>
+                    <p class="sig">
+                        (Fn [(Ref String a)] Command.T)
+                    </p>
+                    <pre class="args">
+                        (new path)
+                    </pre>
+                    <p class="doc">
+                        <p>creates a command that will execute <code>path</code>, with no arguments and
+no piped standard input.</p>
+<p><code>path</code> is resolved through <code>PATH</code> by <code>execvp(3)</code>.</p>
+
+                    </p>
+                </div>
+                <div class="binder">
+                    <a class="anchor" href="#set-stdin">
+                        <h3 id="set-stdin">
+                            set-stdin
+                        </h3>
+                    </a>
+                    <div class="description">
+                        defn
+                    </div>
+                    <p class="sig">
+                        (Fn [Command.T, (Ref String a)] Command.T)
+                    </p>
+                    <pre class="args">
+                        (set-stdin c s)
+                    </pre>
+                    <p class="doc">
+                        <p>sets the string <code>s</code> to be piped to the command’s standard
+input.</p>
+<p>Setting a non-empty string is what makes <a href="Process.html#run"><code>Process.run</code></a>
+open a <code>stdin</code> pipe at all; the empty string (the default) leaves the
+child’s <code>stdin</code> inherited from the parent.</p>
+
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
