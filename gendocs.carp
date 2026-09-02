@@ -1,0 +1,41 @@
+(load "process.carp")
+
+(Project.config "title" "carp-process")
+(Project.config "docs-directory" "./docs/")
+(Project.config "docs-logo" "")
+(Project.config "docs-url" "https://github.com/carpentry-org/carp-process")
+(Project.config "docs-styling" "../style.css")
+(Project.config "docs-prelude" "Subprocess management for Carp.
+
+Spawns and manages child processes with POSIX semantics: `fork`/`execvp`,
+pipe setup, descriptor hygiene and signal-aware waiting. Arguments go to
+`execvp(3)` directly, never through a shell, so there is nothing to quote
+and nothing to inject.
+
+Everything here is synchronous and reads whole streams into memory.
+
+### Quick start
+```
+(load \"git@github.com:carpentry-org/carp-process@master\")
+
+(let [out (Process.run-combined
+            &(=> (Command.new \"echo\") (Command.arg \"hello\")))]
+  (println* (Process.Output.stdout &out)))
+```
+
+### Modules
+- [`Command`](./Command.html) — building a command to run
+- [`Process`](./Process.html) — spawning, waiting, running to completion
+
+### Deadlocks
+[`Process.run`](./Process.html#run) drains `stdout` and then `stderr`, one
+after the other. A child that fills the `stderr` pipe buffer while `run` is
+still reading `stdout` will block, and so will `run`. Use
+[`run-combined`](./Process.html#run-combined), which merges the two streams
+at the OS level and has only one buffer to drain.")
+
+(save-docs Command Process)
+; Carp's save-docs hardcodes the index filename as <title>_index.html.
+; Rename to docs/index.html.
+(defn main []
+  (System.system "mv ./docs/carp-process_index.html ./docs/index.html"))

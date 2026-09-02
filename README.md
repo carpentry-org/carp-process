@@ -14,9 +14,17 @@ A foundational subprocess management library for the [Carp](https://github.com/c
 - **Syscall Resilience**: Explicit handling of `EINTR` and `EPIPE`.
 
 
+## Installation
+
+```
+(load "git@github.com:carpentry-org/carp-process@master")
+```
+
 ## Examples
 
-See [examples.md](examples.md) for usage examples.
+See [examples.md](examples.md) for usage examples, and the
+[API documentation](https://carpentry.dev/carp-process) for the full reference.
+
 ## Realistic Expectations & Safety
 
 As a synchronous systems library, users should be aware of the following architectural trade-offs:

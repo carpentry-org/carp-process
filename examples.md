@@ -5,7 +5,7 @@
 The `Process.run` function is the easiest way to execute a command and capture its output.
 
 ```carp
-(load "carp-process/process.carp")
+(load "git@github.com:carpentry-org/carp-process@master")
 (use Process)
 
 (defn main []

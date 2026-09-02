@@ -7,15 +7,33 @@
 (system-include "signal.h")
 
 (defmodule Command
+  (doc T "a command to be run: the executable `path`, its `args` (not
+including `argv[0]`), and the string to pipe to its standard input.
+
+Build one with [`new`](#new) and [`arg`](#arg) rather than by hand.")
   (deftype T [path String
               args (Array String)
               stdin String])
 
+  (doc new "creates a command that will execute `path`, with no arguments and
+no piped standard input.
+
+`path` is resolved through `PATH` by `execvp(3)`.")
   (defn new [path] (T.init @path [] @""))
 
+  (doc arg "appends the argument `a` to the command `c`.
+
+Arguments are passed to `execvp(3)` as-is, never through a shell, so they
+need no quoting and cannot be split or interpreted.")
   (defn arg [c a]
     (let [new-args (Array.push-back @(T.args &c) @a)] (T.set-args c new-args)))
 
+  (doc set-stdin "sets the string `s` to be piped to the command’s standard
+input.
+
+Setting a non-empty string is what makes [`Process.run`](Process.html#run)
+open a `stdin` pipe at all; the empty string (the default) leaves the
+child’s `stdin` inherited from the parent.")
   (defn set-stdin [c s] (T.set-stdin c @s)))
 
 (defmodule Process
@@ -46,6 +64,11 @@
                "void $NAME(int sig)"
                "$DECL { signal(sig, SIG_IGN); }")
 
+  (doc ignore-sigpipe "sets `SIGPIPE` to `SIG_IGN` for the whole process.
+
+Writing to a closed pipe then fails with `EPIPE` instead of killing the
+program, which is what the write path here expects. Called once during
+spawn.")
   (defn ignore-sigpipe [] (ignore-signal SIGPIPE))
 
   (register WIFEXITED (Fn [Int] Bool) "WIFEXITED")
@@ -53,11 +76,20 @@
   (register WTERMSIG (Fn [Int] Int) "WTERMSIG")
   (register WEXITSTATUS (Fn [Int] Int) "WEXITSTATUS")
 
+  (doc T "a handle to a spawned process: its pid, and the parent-side ends of
+the pipes to its `stdout`, `stderr` and `stdin`.
+
+A descriptor is `-1` when the corresponding pipe was not opened.")
   (deftype T [pid Int
               stdout Int
               stderr Int
               stdin Int])
 
+  (doc ExitStatus "how a process terminated.
+
+`exited?` distinguishes the two cases: a normal exit sets it true and puts
+the status in `code`, while termination by a signal sets it false, `code` to
+`-1`, and `signal` to the signal number.")
   (deftype ExitStatus [code Int
                        signal Int
                        exited? Bool])
@@ -94,6 +126,18 @@
       (ignore (close @(Array.unsafe-nth (PipeSet.in ps) 0)))
       (ignore (close @(Array.unsafe-nth (PipeSet.in ps) 1)))))
 
+  (doc spawn-with-options "spawns `path` with `args`, returning a handle to
+the running process.
+
+When `merge-stderr` is true the child’s `stderr` is pointed at the same pipe
+as its `stdout` and no separate `stderr` pipe is opened. When `capture-stdin`
+is true a pipe is opened for the child’s `stdin`, writable through
+`T.stdin`.
+
+All parent-side descriptors are set `FD_CLOEXEC` before the fork, and the
+child `_exit`s (never `exit`) so no shared runtime state is flushed twice.
+On any setup failure every descriptor is closed and a `Result.Error` is
+returned.")
   (defn spawn-with-options [path args merge-stderr capture-stdin]
     (let [ps (PipeSet.init [-1 -1] [-1 -1] [-1 -1])
           success true]
@@ -219,8 +263,19 @@
                         -1)]
                   (Result.Success (T.init pid out-read err-read in-write))))))))))
 
+  (doc spawn "spawns `path` with `args` and returns a handle to the running
+process, with `stdout` and `stderr` on separate pipes and no `stdin` pipe.
+
+Arguments are passed to `execvp(3)` directly, not through a shell, so there
+is no quoting or injection to worry about. `args` does not include `argv[0]`;
+it is prepended from `path`.")
   (defn spawn [path args] (spawn-with-options path args false false))
 
+  (doc wait "blocks until the process `p` terminates and returns its
+[`ExitStatus`](#ExitStatus).
+
+A normal exit yields the exit code with `exited?` true; termination by a
+signal yields code `-1`, the signal number, and `exited?` false.")
   (defn wait [p]
     (let [status 0]
       (do
@@ -233,6 +288,11 @@
   (register write (Fn [Int (Ptr CChar) Int] Int) "write")
   (register memcpy (Fn [(Ptr CChar) (Ptr CChar) Int] (Ptr ())) "memcpy")
 
+  (doc write-all "writes all of `data` to the descriptor `fd`, looping until
+the write is complete.
+
+Returns whether every byte was written. Retries on `EINTR`; any other write
+error (`EPIPE`, for instance) makes it return `false`.")
   (defn write-all [fd data]
     (let [ptr (String.cstr data)
           len (String.length data)
@@ -254,6 +314,12 @@
         ;; Error or res == 0
         (and (>= written 0) (Int.= written len)))))
 
+  (doc read-all "reads from the descriptor `fd` until EOF and returns everything
+it read as a `String`.
+
+Returns the empty string for a negative `fd`. Retries on `EINTR`; any other
+read error ends the loop and returns what was read so far. The whole stream
+is held in memory, so this is not suitable for unbounded output.")
   (defn read-all [fd]
     (if (< fd 0)
       @""
@@ -282,10 +348,22 @@
           ;; Real error
           total))))
 
+  (doc Output "the captured result of a finished process: its `stdout`,
+its `stderr`, and the [`ExitStatus`](#ExitStatus) it terminated with.")
   (deftype Output [stdout String
                    stderr String
                    status Process.ExitStatus])
 
+  (doc run "runs `cmd` to completion, capturing `stdout` and `stderr`
+separately, and returns an [`Output`](#Output).
+
+The two pipes are drained sequentially, `stdout` first. If the child fills
+the `stderr` pipe buffer while this is still reading `stdout`, both sides
+block and the call deadlocks. Use [`run-combined`](#run-combined) for
+processes that write a lot to both streams.
+
+On spawn failure the error is returned in `Output.stderr` with an
+`ExitStatus` of code `-1` and `exited?` false.")
   (defn run [cmd]
     (let [capture-in (not (= "" (Command.T.stdin cmd)))
           p-res (spawn-with-options (Command.T.path cmd)
@@ -309,6 +387,16 @@
                 (if (>= @(T.stderr &p) 0) (ignore (close @(T.stderr &p))) ())
                 (Output.init stdout stderr status)))))))
 
+  (doc run-combined
+    "runs `cmd` to completion with `stderr` merged into `stdout` at the
+OS level, and returns an [`Output`](#Output).
+
+Because both streams share one pipe there is only one buffer to drain, so
+this cannot deadlock the way [`run`](#run) can. `Output.stderr` is always
+empty. Prefer this for processes with high-volume or interleaved output.
+
+On spawn failure the error is returned in `Output.stderr` with an
+`ExitStatus` of code `-1` and `exited?` false.")
   (defn run-combined [cmd]
     (let [capture-in (not (= "" (Command.T.stdin cmd)))
           p-res (spawn-with-options (Command.T.path cmd)
@@ -334,6 +422,14 @@
   (register SIGTERM Int "SIGTERM")
   (register SIGKILL Int "SIGKILL")
 
+  (doc terminate "sends `SIGTERM` to the process `p`.
+
+Returns the return value of `kill(2)`: `0` on success, `-1` on error.
+The process is not reaped; call [`wait`](#wait) afterwards.")
   (defn terminate [p] (kill @(T.pid p) SIGTERM))
 
+  (doc kill! "sends `SIGKILL` to the process `p`.
+
+Returns the return value of `kill(2)`: `0` on success, `-1` on error.
+The process is not reaped; call [`wait`](#wait) afterwards.")
   (defn kill! [p] (kill @(T.pid p) SIGKILL)))
