@@ -17,7 +17,7 @@
           (Result.Error err)
             (assert-true process-test-state
               false
-              &(format "Failed to spawn 'ls': %s" &err)))
+              &(unsafe-format "Failed to spawn 'ls': %s" &err)))
         ;; Test 2: Command & Run (Capture Output)
         cmd2 (Command.new "echo")
         cmd-with-args2 (Command.arg cmd2 "hello carp")
@@ -48,7 +48,9 @@
                 @(ExitStatus.code &status)
                 "Custom exit code via 'sh'"))
           (Result.Error err)
-            (assert-true &s5 false &(format "Failed to spawn 'sh': %s" &err)))
+            (assert-true &s5
+              false
+              &(unsafe-format "Failed to spawn 'sh': %s" &err)))
         ;; Test 5: Deadlock prevention with run-combined (Large output)
         cmd5 (Command.new "python3")
         cmd5-args (Command.arg cmd5 "-c")
@@ -93,7 +95,9 @@ t1.start(); t2.start(); t1.join(); t2.join()")
                   (not @(ExitStatus.exited? &status))
                   "Process killed by signal did not exit normally")))
           (Result.Error err)
-            (assert-true &s8 false &(format "Failed to spawn 'sleep': %s" &err)))
+            (assert-true &s8
+              false
+              &(unsafe-format "Failed to spawn 'sleep': %s" &err)))
         ;; Test 8: Stdin piping
         cmd8 (Command.new "cat")
         cmd8-in (Command.set-stdin cmd8 "carp stdin test")
