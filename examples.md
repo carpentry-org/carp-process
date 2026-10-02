@@ -16,8 +16,8 @@ The `Process.run` function is the easiest way to execute a command and capture i
       (IO.println (Output.stdout &output))
       (let [status (Output.status &output)]
         (if @(ExitStatus.exited? status)
-          (IO.println &(format "Exited with code: %d" @(ExitStatus.code status)))
-          (IO.println &(format "Killed by signal: %d" @(ExitStatus.signal status))))))))
+          (IO.println &(unsafe-format "Exited with code: %d" @(ExitStatus.code status)))
+          (IO.println &(unsafe-format "Killed by signal: %d" @(ExitStatus.signal status))))))))
 ```
 
 ## Deadlock-Safe Execution
